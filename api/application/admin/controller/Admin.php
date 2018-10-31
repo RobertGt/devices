@@ -31,7 +31,7 @@ class Admin extends Base
     public function adminDelete(Request $request)
     {
         $param = [
-            'adminid'  => authcode($request->param('id',0, 'intval'))
+            'adminid'  => authcode($request->param('id', ''))
         ];
 
         if($param['adminid'] == 1){

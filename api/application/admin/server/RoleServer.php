@@ -99,4 +99,17 @@ class RoleServer
         return true;
     }
 
+    public function roleDelete($rid)
+    {
+        if($rid == 1)return false;
+        try{
+            $where['rid'] = $rid;
+            (new RoleModel())->where($where)->delete();
+        }catch (Exception $e){
+            Log::error("roleDelete error:" . $e->getMessage());
+            return false;
+        }
+        return true;
+    }
+
 }

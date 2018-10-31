@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  * Author: Robert
- * Date: 2018/9/23 17:30
+ * Date: 2018/10/31 22:59
  * Email: 1183@mapgoo.net
  */
 
@@ -11,10 +11,10 @@ namespace app\admin\model;
 
 use think\Model;
 
-class ThemeModel extends Model
+class DeviceModel extends Model
 {
-    protected $table = 'bas_theme';
-    protected $pk = 'themeId';
+    protected $table = 'sys_devices';
+    protected $pk = 'deviceId';
     protected $autoWriteTimestamp = true;
     protected $createTime = 'createTime';
     protected $updateTime = 'updateTime';

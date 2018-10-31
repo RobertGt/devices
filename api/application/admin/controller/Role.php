@@ -89,4 +89,24 @@ class Role extends Base
             ajax_info(1,'修改失败');
         }
     }
+
+    public function roleDelete(Request $request)
+    {
+        $param = [
+            'rid'  => authcode($request->param('id', ''))
+        ];
+
+        $validate = new RoleValidate();
+        if(!$validate->scene('checkId')->check($param)){
+            ajax_info(1 , $validate->getError());
+        }
+
+        $response = (new RoleServer())->roleDelete($param['rid']);
+
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(1,'操作失败');
+        }
+    }
 }

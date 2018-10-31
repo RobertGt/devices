@@ -21,6 +21,10 @@ Route::post([
 
     'admin/roleInsert'      => 'admin/Role/roleInsert',
     'admin/roleUpdate'      => 'admin/Role/roleUpdate',
+
+    'admin/deviceInsert'    => 'admin/Device/deviceInsert',
+    'admin/deviceUpdate'    => 'admin/Device/deviceUpdate',
+
 ]);
 
 Route::get([
@@ -34,4 +38,9 @@ Route::get([
     'admin/roleList'      => 'admin/Role/roleList',
     'admin/roleDelete'    => 'admin/Role/roleDelete',
     'admin/roleInfo'      => 'admin/Role/roleInfo',
+
+    'admin/deviceList'    => 'admin/Device/deviceList',
+    'admin/deviceDelete'  => 'admin/Device/deviceDelete',
+    'admin/deviceInfo'    => 'admin/Device/deviceInfo',
+    'admin/deviceType'    => 'admin/Device/deviceType',
 ]);

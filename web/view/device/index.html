@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title data-locale="account-title">后台 - 账号管理</title>
+    <title data-locale="device-title">后台 - 设备管理</title>
     <meta name="keywords" content="后台">
     <meta name="description" content="后台">
 
@@ -24,6 +24,10 @@
 .fancybox img{
 	width: 30%;
 }
+    .btn-circle{
+        width: 15px;
+        height: 15px;
+    }
 </style>
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -31,7 +35,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5 data-locale="account-manage">账号管理</h5>
+                        <h5 data-locale="device-manage">设备管理</h5>
                         <div class="ibox-tools">
 							<a class="refresh-link" href="javascript:location.reload()">
                                 <i class="fa fa-refresh"></i>
@@ -46,14 +50,14 @@
               				<div class="col-sm-2 m-b-xs searchFrom">
 								<div class="input-group">
 
-									<input type="text" class="input-sm form-control" name="account" placeholder="请输入账号名称" data-placeholder="account-search">
+									<input type="text" class="input-sm form-control" name="device" placeholder="请输设备名或者设备ID" data-placeholder="device-search">
 									<span class="input-group-btn">
 										<button class="btn btn-sm btn-primary" id="search" data-locale="search"> 搜索</button> </span>
 								</div>
 							</div>
 							<button class="operation btn btn-sm btn-primary" style="float: right;" type="button">
 								<i class="fa fa-plus"></i>
-								<span data-locale="add-account">新建账号</span>
+								<span data-locale="add-device">添加设备</span>
 							</button>
 						</div>
                         <div class="table-responsive">
@@ -92,24 +96,24 @@
 
 <script>
     var updateId = 0;
-	var list = 'admin/adminList';
-	var del = 'admin/adminDelete';
+	var list = 'admin/deviceList';
+	var del = 'admin/deviceDelete';
 	var add = 'insert.html';
     var update = 'update.html';
-	var title = ['row','account','name','parentAdmin','roleName','loginIp','loginCount','createTime','loginTime','remark','operation'];
+	var title = ['row','name','deviceImei','deviceName','deviceType','deviceState', 'remark','createTime','updateTime','lastTime','operation'];
 	var table = [
 	    {"name":"row","type":"text"},
-		{"name":"account","type":"text"},
         {"name":"name","type":"text"},
-        {"name":"parentAdmin","type":"text"},
-        {"name":"roleName","type":"text"},
-		{"name":"loginIp","type":"text"},
-		{"name":"loginCount","type":"text"},
+		{"name":"deviceImei","type":"text"},
+        {"name":"deviceName","type":"text"},
+        {"name":"deviceType","type":"text"},
+        {"name":"deviceState","type":"text"},
+        {"name":"remark","type":"text", "width":"10%"},
 		{"name":"createTime","type":"text"},
-		{"name":"loginTime","type":"text"},
-		{"name":"remark","type":"text", "width":"15%"}
+		{"name":"updateTime","type":"text"},
+		{"name":"lastTime","type":"text"}
 	];
-	var object = new $.FormObject(title,table,list,".table-responsive",['edit','del']);
+	var object = new $.FormObject(title,table,list,".table-responsive",['send', 'statistics', 'edit', 'del']);
 	object.run();
 	$(document).on("click",".operation .btn-danger",function() {
 		var id = $(this).attr("data-id");
@@ -118,12 +122,10 @@
 	});
 	$(document).on("click",".operation .btn-success",function(){
 		var id = $(this).attr("data-id");
-		var title = $(".ibox-title h5").text();
-		object.edit(update,id,'修改系统账号');
+		object.edit(update,id,' ');
 	})
 	$(document).on("click",".operation.btn-primary",function(){
-		var title = $(this).text();
-		object.add(add,title);
+		object.add(add, ' ');
 	})
 	$(document).on("click","#search",function(){
 		var searchdata = {};

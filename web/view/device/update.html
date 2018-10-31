@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-  <title data-locale="edit-account-title">后台 - 修改系统账号</title>
+  <title data-locale="edit-device-title">后台 - 修改设备</title>
   <meta name="keywords" content="后台">
   <meta name="description" content="后台">
 
@@ -107,7 +107,7 @@
       <div class="col-sm-12">
         <div class="ibox float-e-margins">
           <div class="ibox-title">
-            <h5 data-locale="edit-account">修改账号</h5>
+            <h5 data-locale="edit-device">修改设备</h5>
             <div class="ibox-tools">
               <a class="refresh-link" href="javascript:location.reload()">
                                 <i class="fa fa-refresh"></i>
@@ -121,27 +121,21 @@
             <form class="form-horizontal m-t" id="signupForm">
               <input type="hidden" name="id" value="0">
               <div class="form-group">
-                <label class="col-sm-2 control-label" data-locale="name">名称</label>
+                <label class="col-sm-2 control-label" data-locale="deviceImei">设备号</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="请输入名称" name="name" data-placeholder="input-name"/>
+                  <input type="text" class="form-control" placeholder="请输入设备号" name="deviceImei" data-placeholder="input-deviceImei"/>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" data-locale="account">账号</label>
+                <label class="col-sm-2 control-label" data-locale="deviceName">设备名</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="请输入账号名" name="username" data-placeholder="input-account"/>
+                  <input type="text" class="form-control" placeholder="请输入设备名" name="deviceName" data-placeholder="input-deviceName"/>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label"  data-locale="password">密码</label>
+                <label class="col-sm-2 control-label"  data-locale="deviceType">设备类型</label>
                 <div class="col-sm-9">
-                  <input type="password" class="form-control" placeholder="请输入密码" name="editPassword" data-placeholder="input-password"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label"  data-locale="roleName">角色</label>
-                <div class="col-sm-9">
-                  <select class="form-control" name="rid">
+                  <select class="form-control" name="deviceTypeId">
 
                   </select>
                 </div>
@@ -186,9 +180,20 @@
 <script src="../../static/js/toastr.options.js"></script>
 <script src="../../static/js/mapgoo.js"></script>
 <script>
-    var url = "admin/adminUpdate";
-    var info = "admin/adminInfo";
+    var url = "admin/deviceUpdate";
+    var info = "admin/deviceInfo";
     $(function () {
+
+    })
+</script>
+<script src="../../static/js/update.js"></script>
+<script>
+    getInfo(info, {id : parent.updateId}, function(resp){
+        $("input[name='deviceImei']").val(resp.deviceImei);
+        $("input[name='deviceName']").val(resp.deviceName);
+        $("textarea[name='remark']").val(resp.remark);
+        $("input[name='id']").val(resp.deviceId);
+        var deviceTypeId = resp.deviceTypeId;
         setTimeout(function(){
             layer.load(0, {shade: [0.6,'#000000']});
         },1);
@@ -196,10 +201,9 @@
             headers: {
                 token: $.cookie('login_token')
             },
-            url: WEBHTTP + "admin/adminRole",
+            url: WEBHTTP + "admin/deviceType?deviceTypeId=" + deviceTypeId,
             type: "GET",
             dataType: "json",
-            data:{aid : parent.updateId},
             success: function(response) {
                 if (response.error == 0) {
                     var html = '';
@@ -208,10 +212,10 @@
                         if(v.select == 1){
                             select = "selected";
                         }
-                        html +='<option value='+ v.rid +' '+select+'>'+ v.roleName +'</option>'
+                        html +='<option value='+ v.deviceTypeId +' '+select+'>'+ v.name +'</option>'
                     })
 
-                    $("select[name=rid]").html(html);
+                    $("select[name=deviceTypeId]").html(html);
                     layer.closeAll();
                 } else if(response.error == 401){
                     toastr.error(response.reason);
@@ -228,19 +232,5 @@
                 }
             }
         });
-    })
-</script>
-<script src="../../static/js/update.js"></script>
-<script>
-    getInfo(info, {aid : parent.updateId}, function(resp){
-        $("input[name='username']").val(resp.account);
-        $("input[name='name']").val(resp.name);
-        if(resp.admin == 1){
-            $("input[name='username']").attr("readonly",true);
-            $("input[name='name']").attr("readonly",true);
-            $("select[name='rid']").attr("disabled",true);
-        }
-        $("textarea[name='remark']").val(resp.remark);
-        $("input[name='id']").val(resp.aid);
     })
 </script>

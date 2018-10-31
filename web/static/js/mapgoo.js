@@ -93,9 +93,13 @@ var WEBHTTP = "http://192.168.31.247/";
 				if(option.length > 0){
 				html+='<td class="operation">';
 					$.each(option,function(i){
-						if(option[i] == "allot"){
+                        if(option[i] == "send"){
+                            html+=' <button class="btn btn-primary btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-send"></i> <span class="bold" data-locale="send"> 指令发送</span></button> '
+                        }else if(option[i] == "statistics"){
+                            html+=' <button class="btn btn-info btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-bar-chart"></i> <span class="bold" data-locale="statistics"> 统计</span></button> '
+                        }else if(option[i] == "allot"){
                             html+=' <button class="btn btn-warning btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-user-plus"></i> <span class="bold" data-locale="allot"> 权限分配</span></button> '
-						}else if(option[i] == "edit"){
+                        }else if(option[i] == "edit"){
 							html+=' <button class="btn btn-success btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-edit"></i> <span class="bold" data-locale="edit"> 修改</span></button> '
 						} else if(option[i] == "del"){
 							html+=' <button class="btn btn-danger btn-sm" type="button"  data-id='+datas[v].id+'><i class="fa fa-trash-o"></i> <span class="bold" data-locale="del"> 删除</span></button> '

@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-  <title data-locale="add-account-title">后台 - 新增账号</title>
+  <title data-locale="add-device-title">后台 - 添加设备</title>
   <meta name="keywords" content="后台">
   <meta name="description" content="后台">
 
@@ -107,7 +107,7 @@
       <div class="col-sm-12">
         <div class="ibox float-e-margins">
           <div class="ibox-title">
-            <h5 data-locale="add-account">新建账号</h5>
+            <h5 data-locale="add-device">添加设备</h5>
             <div class="ibox-tools">
               <a class="refresh-link" href="javascript:location.reload()">
                 <i class="fa fa-refresh"></i>
@@ -120,27 +120,21 @@
           <div class="ibox-content">
             <form class="form-horizontal m-t" id="signupForm" action="">
               <div class="form-group">
-                <label class="col-sm-2 control-label" data-locale="name">名称</label>
+                <label class="col-sm-2 control-label" data-locale="deviceImei">设备号</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="请输入名称" name="name" data-placeholder="input-name"/>
+                  <input type="text" class="form-control" placeholder="请输入设备号" name="deviceImei" data-placeholder="input-deviceImei"/>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" data-locale="account">账号</label>
+                <label class="col-sm-2 control-label" data-locale="deviceName">设备名</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="请输入账号名" name="username" data-placeholder="input-account"/>
+                  <input type="text" class="form-control" placeholder="请输入设备名" name="deviceName" data-placeholder="input-deviceName"/>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label"  data-locale="password">密码</label>
+                <label class="col-sm-2 control-label"  data-locale="deviceType">设备类型</label>
                 <div class="col-sm-9">
-                  <input type="password" class="form-control" placeholder="请输入密码" name="newPassword" data-placeholder="input-password"/>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label"  data-locale="roleName">角色</label>
-                <div class="col-sm-9">
-                  <select class="form-control" name="rid">
+                  <select class="form-control" name="deviceTypeId">
 
                   </select>
                 </div>
@@ -186,7 +180,7 @@
 <script src="../../static/js/toastr.options.js"></script>
 <script src="../../static/js/mapgoo.js"></script>
 <script>
-    var url = "admin/adminInsert";
+    var url = "admin/deviceInsert";
     $(function () {
         setTimeout(function(){
             layer.load(0, {shade: [0.6,'#000000']});
@@ -195,17 +189,17 @@
             headers: {
                 token: $.cookie('login_token')
             },
-            url: WEBHTTP + "admin/adminRole",
+            url: WEBHTTP + "admin/deviceType",
             type: "GET",
             dataType: "json",
             success: function(response) {
                 if (response.error == 0) {
                     var html = '';
                     $.each(response.result,function(k, v){
-                        html +='<option value='+ v.rid +'>'+ v.roleName +'</option>'
+                        html +='<option value='+ v.deviceTypeId +'>'+ v.name +'</option>'
                     })
 
-                    $("select[name=rid]").html(html);
+                    $("select[name=deviceTypeId]").html(html);
                     layer.closeAll();
                 } else if(response.error == 401){
                     toastr.error(response.reason);
