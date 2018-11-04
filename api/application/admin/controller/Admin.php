@@ -133,4 +133,27 @@ class Admin extends Base
         $response = (new AdminServer())->adminRole($this->adminInfo['aid'], $param['aid']);
         ajax_info(0,'success', $response);
     }
+
+    public function permission(Request $request)
+    {
+        $param = [
+            'menu' => $request->param('menu', 0) ? 1 : 0
+        ];
+        $response = (new AdminServer())->permission($this->adminInfo['rid'], $param['menu']);
+        ajax_info(0,'success', $response);
+    }
+
+    public function adminPermission(Request $request)
+    {
+        $param = [
+            'rid' => authcode($request->param('rid', '')),
+            'fid' => $request->param('fid', ''),
+        ];
+        $response = (new AdminServer())->adminPermission($param);
+        if($response){
+            ajax_info(0,'success');
+        }else{
+            ajax_info(0,'error');
+        }
+    }
 }

@@ -44,19 +44,20 @@
                         </div>
 
                     </li>
-                    <li>
+
+                    <li style="display: none" id="fid_1">
                         <a class="J_menuItem" href="../admin/index.html"><i class="fa fa-user"></i>
-                            <span class="nav-label">账号管理</span>
+                            <span class="nav-label" data-locale="account-manage">账号管理</span>
                         </a>
                     </li>
-                    <li>
+                    <li style="display: none" id="fid_2">
                         <a class="J_menuItem" href="../role/index.html"><i class="fa fa-street-view"></i>
-                            <span class="nav-label">角色管理</span>
+                            <span class="nav-label" data-locale="role-manage">角色管理</span>
                         </a>
                     </li>
-                    <li>
+                    <li style="display: none" id="fid_3">
                         <a class="J_menuItem" href="../device/index.html"><i class="fa fa-sliders"></i>
-                            <span class="nav-label">设备管理</span>
+                            <span class="nav-label" data-locale="device-manage">设备管理</span>
                         </a>
                     </li>
                 </ul>
@@ -229,6 +230,38 @@
             return false;
         }
         $(".loginUser").text($.cookie('login_account'));
+        setTimeout(function(){
+            layer.load(0, {shade: [0.6,'#000000']});
+        },1);
+        $.ajax({
+            headers: {
+                token: $.cookie('login_token')
+            },
+            url: WEBHTTP + "admin/permission?menu=1",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.error == 0) {
+                    $.each(response.result,function(k, v){
+                        $("#fid_" + v.fid).show();
+                    })
+                    layer.closeAll();
+                    loadLang();
+                } else if(response.error == 401){
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        $.cookie('login_token', '', {path: '/', expires: -1});
+                        $.cookie('login_account', '', {path: '/', expires: -1});
+                        parent.parent.location.href = "../../index.html"
+                    },500);
+                }else {
+                    toastr.error(response.reason);
+                    setTimeout(function(){
+                        parent.layer.close(index); //执行关闭
+                    },2000);
+                }
+            }
+        });
     })
     $(document).on("click",".loginOut",function(){
         $.cookie('login_token', '', {path: '/', expires: -1});

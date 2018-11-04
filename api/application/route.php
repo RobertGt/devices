@@ -18,6 +18,7 @@ Route::post([
 
     'admin/adminInsert'      => 'admin/Admin/adminInsert',
     'admin/adminUpdate'      => 'admin/Admin/adminUpdate',
+    'admin/adminPermission'  => 'admin/Admin/adminPermission',
 
     'admin/roleInsert'      => 'admin/Role/roleInsert',
     'admin/roleUpdate'      => 'admin/Role/roleUpdate',
@@ -33,6 +34,7 @@ Route::get([
     'admin/adminDelete'    => 'admin/Admin/adminDelete',
     'admin/adminInfo'      => 'admin/Admin/adminInfo',
     'admin/adminRole'      => 'admin/Admin/adminRole',
+    'admin/permission'     => 'admin/Admin/permission',
 
 
     'admin/roleList'      => 'admin/Role/roleList',

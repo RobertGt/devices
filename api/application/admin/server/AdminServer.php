@@ -10,6 +10,7 @@ namespace app\admin\server;
 
 
 use app\admin\model\AdminModel;
+use app\admin\model\FunModel;
 use app\admin\model\RoleModel;
 use think\db\Expression;
 use think\Exception;
@@ -203,5 +204,78 @@ class AdminServer
             $row[] = $info;
         }
         return $row;
+    }
+
+    public function permission($id = 0, $isMenu = 1)
+    {
+        $where = [];
+        if($isMenu){
+            $where['menu'] = ['exp', new Expression('is not null')];
+        }
+        $funModel = new FunModel();
+        $field = "fid, funName, alias, menu, funIcon, parentFun";
+
+        if($id != 1){
+            $roleInfo = (new RoleModel())->where(['rid' => $id])->field('fid')->find();
+            $fid = [];
+            if($roleInfo){
+                $fid = $roleInfo->getData('fid');
+            }
+            $where['fid'] = ['in', explode(',', $fid)];
+        }
+        $permission = $funModel->where($where)->field($field)->order('sort desc, parentFun asc')->select();
+        $arr = [];
+        foreach ($permission as $value){
+            $arr[] = $value->getData();
+        }
+
+        $res = $this->treeArr($arr);
+        return $res;
+    }
+
+    public function userPermission($id = 0, $menu = '')
+    {
+        $where[] = ['exp', new Expression("find_in_set('{$menu}', funAction)")];
+        $funModel = new FunModel();
+        $field = "fid";
+
+        $roleInfo = (new RoleModel())->where(['rid' => $id])->field('fid')->find();
+        $fid = [];
+        if($roleInfo){
+            $fid = $roleInfo->getData('fid');
+        }
+        $where['fid'] = ['in', explode(',', $fid)];
+
+        $permission = $funModel->where($where)->field($field)->find();
+        if($permission){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function treeArr(&$arr , $treeArr = [] , $pid = 0){
+        foreach ($arr as $k=>$v){
+            if($v['parentFun'] == $pid){
+                unset($arr[$k]);
+                $childArr = $v;
+                $childArr['children'] =  $this->treeArr($arr , [] , $v['fid']);
+                $treeArr[] = $childArr;
+            }
+        }
+        return $treeArr;
+    }
+
+    public function adminPermission($param)
+    {
+        if($param['rid'] == 1){
+            return false;
+        }
+        try{
+            (new RoleModel())->save(['fid' => $param['fid']], ['rid' => (int)$param['rid']]);
+        }catch (Exception $e){
+            Log::error("adminPermission error:" . $e->getMessage());
+            return false;
+        }
     }
 }

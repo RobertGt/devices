@@ -71,7 +71,7 @@ class RoleServer
     {
         $where['rid'] = $rid;
 
-        $roleInfo = (new RoleModel())->field('rid, roleName, remark')->where($where)->find();
+        $roleInfo = (new RoleModel())->field('rid, roleName, remark, fid')->where($where)->find();
 
         if($roleInfo){
             $roleInfo = $roleInfo->getData();

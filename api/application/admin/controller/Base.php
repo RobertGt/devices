@@ -29,13 +29,23 @@ class Base
         $request = Request::instance();
 
         $token     = $request->header('token', '');
-
-        $admin = (new AdminServer())->adminInfo(0, $token);
+        $adminServer = new AdminServer();
+        $admin = $adminServer->adminInfo(0, $token);
 
         if (!$admin){
             ajax_info(401, 'failure of authentication');
         }
 
+        if($admin['aid'] == 1 || $admin['rid'] == 1){
+            $this->adminInfo = $admin;
+            return true;
+        }
+        $menu = $request->controller() . '/' . $request->action();
+
+        $auth = $adminServer->userPermission($admin['rid'], $menu);
+        if(empty($auth)){
+            ajax_info(403 , 'forbidden');
+        }
         $this->adminInfo = $admin;
 
         return true;
